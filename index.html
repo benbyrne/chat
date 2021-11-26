@@ -54,13 +54,15 @@
           document.getElementById('form').setAttribute("style", "display: flex;");
           console.log(user_id);
           id_input.value = '';
+          input.focus();
+          input.select();
         }
       });
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-          socket.emit('chat message', '[' + user_id + ']' + ' ' + input.value);
+          socket.emit('chat message', user_id + ': ' + input.value);
           input.value = '';
         }
       });
