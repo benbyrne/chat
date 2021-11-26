@@ -5,9 +5,9 @@
     <title>Chat</title>
     <style>
 
-      html {max-height: 100%;}
+      body { background: black; color: white; font-size: 1.5em; margin: 0; min-height: 100%; }
 
-      body { background: black; color: white; font-size: 1.5em; margin: 0; padding: 2em; overflow: scroll; font-family: Helvetica, Arial, sans-serif; }
+      main { font-size: 1em; margin: 0; padding: 2em; display: block; height: 85vh; overflow: auto; font-family: Helvetica, Arial, sans-serif; }
 
       .lightmode {background: white; color: black;}
 
@@ -15,12 +15,12 @@
 
       #modebutton {background: black; color: white; font-size: 1em; padding: 1rem; position: fixed; top: 2.5%; right: 2.5%; display: block; height: 4rem; border-radius: 2rem; box-sizing: border-box; box-shadow: 4px 3px 8px 1px #969696; }
 
-      #id_form { background: black; ; padding: 0.25rem; position: fixed; bottom: 12%; left: 2%; right: 2.5%; display: flex; height: 4rem; border-radius: 2rem; box-sizing: border-box; box-shadow: 4px 3px 8px 1px #969696; }
+      #id_form { background: black; ; padding: 0.25rem; position: fixed; bottom: 13%; left: 2%; right: 2.5%; display: flex; height: 4rem; border-radius: 2rem; box-sizing: border-box; box-shadow: 4px 3px 8px 1px #969696; }
       #id_input { font-size: 1em; border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
       #id_input:focus { outline: none; }
       #id_form > button { color: white; font-size: 1em;background: none; border: none; padding: 0 1.5rem; margin: 0.25rem; border-radius: 2rem; outline: none; }
 
-      #form { display: none; background: black; ; padding: 0.25rem; position: fixed; bottom: 12%; left: 2%; right: 2.5%; height: 4rem; border-radius: 2rem; box-sizing: border-box; box-shadow: 4px 3px 8px 1px #969696; }
+      #form { display: none; background: black; ; padding: 0.25rem; position: fixed; bottom: 13%; left: 2%; right: 2.5%; height: 4rem; border-radius: 2rem; box-sizing: border-box; box-shadow: 4px 3px 8px 1px #969696; }
       #input { font-size: 1em; border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
       #input:focus { outline: none; }
       #form > button { color: white; font-size: 1em;background: none; border: none; padding: 0 1.5rem; margin: 0.25rem; border-radius: 2rem; outline: none; }
@@ -32,7 +32,12 @@
     </style>
   </head>
   <body>
-    <ul id="messages"></ul>
+
+    <main id="text">
+    
+       <ul id="messages"></ul>
+
+    </main>
 
     <button id="modebutton" onclick="colourMode()">Dark/Light</button>
 
