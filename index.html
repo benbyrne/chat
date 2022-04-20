@@ -56,6 +56,8 @@
 
     <p id="counter"></p>
 
+    <div id="error-container"></div>
+
     <form id="id_form" action="">
       <input id="id_input" autocomplete="off" /><button>Nickname</button>
     </form>
@@ -76,25 +78,34 @@
       var form = document.getElementById('form');
       var input = document.getElementById('input');
 
-      var user_id;
+      var user;
 
       id_form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (id_input.value) {
-          user_id = id_input.value;
+          user = id_input.value;
+          socket.emit('setUsername', user);
           document.getElementById('id_form').setAttribute("style", "display: none;");
           document.getElementById('form').setAttribute("style", "display: flex;");
-          console.log(user_id);
+          console.log(user);
           id_input.value = '';
           input.focus();
           input.select();
         }
       });
 
+      socket.on('userExists', function(data){
+         var item = document.createElement('li');
+         item.textContent = data;
+         messages.insertBefore(item, messages.childNodes[0]);
+         document.getElementById('id_form').setAttribute("style", "display: flex;");
+          document.getElementById('form').setAttribute("style", "display: none;");
+      });
+
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (input.value) {
-          socket.emit('chat message', user_id + ': ' + input.value);
+          socket.emit('chat message', {message: input.value, user: user});
           input.value = '';
         }
       });
@@ -103,9 +114,18 @@
         document.getElementById('counter').innerHTML = "Connected: " + count;
       });
 
+    /*  socket.on('users', function(users) {
+        document.getElementById('counter').innerHTML = "Connected: " + users[0].value;
+      }); */
+
+      socket.on('userExists', function(data){
+         document.getElementById('error-container').innerHTML = data;
+      });
+
+
       socket.on('chat message', function(msg) {
         var item = document.createElement('li');
-        item.textContent = msg;
+        item.textContent = msg.user + ": " + msg.message;
         messages.insertBefore(item, messages.childNodes[0]);
         // window.scrollTo(0, document.body.scrollHeight);
       });
