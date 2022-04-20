@@ -18,22 +18,24 @@ io.on('connection', function(socket){
   socket.on("disconnect", (reason) => {
     count = io.engine.clientsCount;
     io.emit('count', count);
-  //  io.emit('users', users);
+    io.emit('users', users);
   });
 
   console.log('A user connected');
 
   socket.on('setUsername', function(data){
-     console.log(data);
+
      if(users.indexOf(data) > -1){
         socket.emit('userExists', data + ' is taken! Try a different nickname.');
      } else {
         users.push(data);
         socket.emit('userSet', {username: data});
+
+        io.emit('users', users);
      }
   });
 
-  // io.emit('users', users);
+  
 
   socket.on('chat message', msg => {
     io.emit('chat message', msg);

@@ -19,6 +19,8 @@
 
       #counter {padding: 1rem; position: fixed; top: 2.5%; right: 2.5%; display: block; height: 2rem; }
 
+      #users {padding: 1rem; position: fixed; top: 6%; right: 2.5%; display: block; height: 2rem; list-style-type: none; }
+
       #id_form { background: black; padding: 0.25rem; position: fixed; bottom: 13%; left: 2%; right: 2.5%; display: flex; height: 4rem; border-radius: 2rem; box-sizing: border-box; box-shadow: 3px 3px 3px white; }
       #id_input { font-size: 1em; border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem;}
       #id_input:focus { outline: none; }
@@ -55,6 +57,8 @@
     <button id="modebutton" onclick="colourMode()">Dark/Light</button>
 
     <p id="counter"></p>
+
+    <ul id="users"></ul>
 
     <div id="error-container"></div>
 
@@ -111,12 +115,19 @@
       });
 
       socket.on('count', function(count) {
-        document.getElementById('counter').innerHTML = "Connected: " + count;
+        document.getElementById('counter').innerHTML = "Connected" + " (" + count + ")";
       });
 
-    /*  socket.on('users', function(users) {
-        document.getElementById('counter').innerHTML = "Connected: " + users[0].value;
-      }); */
+      socket.on('users', function(users) {
+
+        let list = document.getElementById("users");
+  
+        users.forEach((item)=>{
+          let li = document.createElement("li");
+          li.innerText = item;
+          list.appendChild(li);
+        })
+      }); 
 
       socket.on('userExists', function(data){
          document.getElementById('error-container').innerHTML = data;
