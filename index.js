@@ -1,3 +1,5 @@
+const { acceptsLanguages } = require('express/lib/request');
+
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -14,11 +16,22 @@ io.on('connection', function(socket){
 
   count = io.engine.clientsCount;
   io.emit('count', count);
+  io.emit('users', users);
 
   socket.on("disconnect", (reason) => {
     count = io.engine.clientsCount;
     io.emit('count', count);
+
+    function checkUser(user){
+      return user = socket.data.username;
+    }
+
+    var userpos = users.findIndex(checkUser);
+
+    users.splice(userpos,1);
+
     io.emit('users', users);
+
   });
 
   console.log('A user connected');
@@ -30,7 +43,7 @@ io.on('connection', function(socket){
      } else {
         users.push(data);
         socket.emit('userSet', {username: data});
-
+        socket.data.username = data;
         io.emit('users', users);
      }
   });

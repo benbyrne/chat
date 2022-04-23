@@ -103,7 +103,7 @@
          item.textContent = data;
          messages.insertBefore(item, messages.childNodes[0]);
          document.getElementById('id_form').setAttribute("style", "display: flex;");
-          document.getElementById('form').setAttribute("style", "display: none;");
+         document.getElementById('form').setAttribute("style", "display: none;");
       });
 
       form.addEventListener('submit', function(e) {
@@ -115,10 +115,12 @@
       });
 
       socket.on('count', function(count) {
-        document.getElementById('counter').innerHTML = "Connected" + " (" + count + ")";
+        document.getElementById('counter').innerHTML = "<b>Connected" + " (" + count + ")</b>";
       });
 
       socket.on('users', function(users) {
+
+        document.getElementById("users").innerHTML = "";
 
         let list = document.getElementById("users");
   
