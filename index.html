@@ -88,13 +88,15 @@
         e.preventDefault();
         if (id_input.value) {
           user = id_input.value;
-          socket.emit('setUsername', user);
+          data = {name: user, userId: socket.id};
+          socket.emit('setUsername', data);
           document.getElementById('id_form').setAttribute("style", "display: none;");
           document.getElementById('form').setAttribute("style", "display: flex;");
           console.log(user);
           id_input.value = '';
           input.focus();
           input.select();
+
         }
       });
 
@@ -118,17 +120,18 @@
         document.getElementById('counter').innerHTML = "<b>Connected" + " (" + count + ")</b>";
       });
 
-      socket.on('users', function(users) {
+      socket.on('users', function(userNames) {
 
         document.getElementById("users").innerHTML = "";
 
         let list = document.getElementById("users");
-  
-        users.forEach((item)=>{
+
+        Object.values(userNames).forEach(value => {
           let li = document.createElement("li");
-          li.innerText = item;
+          li.innerText = value;
           list.appendChild(li);
         })
+  
       }); 
 
       socket.on('userExists', function(data){

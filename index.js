@@ -5,7 +5,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const port = process.env.PORT || 3000;
 let count = io.engine.clientsCount;
-let users = [];
+let userNames = {};
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -16,21 +16,15 @@ io.on('connection', function(socket){
 
   count = io.engine.clientsCount;
   io.emit('count', count);
-  io.emit('users', users);
+  io.emit('users', userNames);
 
   socket.on("disconnect", (reason) => {
     count = io.engine.clientsCount;
     io.emit('count', count);
 
-    function checkUser(user){
-      return user = socket.data.username;
-    }
+    delete userNames[socket.id];
 
-    var userpos = users.findIndex(checkUser);
-
-    users.splice(userpos,1);
-
-    io.emit('users', users);
+    io.emit('users', userNames);
 
   });
 
@@ -38,13 +32,14 @@ io.on('connection', function(socket){
 
   socket.on('setUsername', function(data){
 
-     if(users.indexOf(data) > -1){
-        socket.emit('userExists', data + ' is taken! Try a different nickname.');
+     if(Object.values(userNames).includes(data.name)){
+        socket.emit('userExists', data.name + ' is taken! Try a different nickname.');
      } else {
-        users.push(data);
-        socket.emit('userSet', {username: data});
-        socket.data.username = data;
-        io.emit('users', users);
+        socket.emit('userSet', {username: data.name});
+        var userName = data.name;
+        var userId = data.userId;
+        userNames[userId] = userName;
+        io.emit('users', userNames);
      }
   });
 
